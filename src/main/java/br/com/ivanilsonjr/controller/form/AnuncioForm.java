@@ -1,6 +1,5 @@
 package br.com.ivanilsonjr.controller.form;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -9,9 +8,9 @@ import br.com.ivanilsonjr.repository.ProdutoRepository;
 import br.com.ivanilsonjr.repository.UsuarioRepository;
 
 public class AnuncioForm {
-	@NotEmpty @Size(min = 7, message="Titulo do anuncio invalido")
+	@Size(min = 7, message="Titulo do anuncio invalido")
 	private String titulo;
-	@NotEmpty @Size(min = 20, message="Descrição do anuncio invalida")
+	@Size(min = 20, message="Descrição do anuncio invalida")
 	private String descricao;
 	@NotNull
 	private Long codigoProduto;
