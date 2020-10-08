@@ -29,13 +29,25 @@ public class Anuncio {
 	private Produto produto;
 	@NotNull @Enumerated(EnumType.STRING)
 	private EstadoAnuncio status = EstadoAnuncio.ABERTO;
-	@NotNull @NotEmpty
+	@NotNull
 	private Double preco;
 	@OneToOne
 	private Usuario anunciante;
 	private LocalDateTime dataAnuncio = LocalDateTime.now();
 	private LocalDateTime dataVenda;
 	
+	public Anuncio() {
+
+	}
+
+	public Anuncio(String titulo, String descricao, Produto produto, Double preco, Usuario anunciante) {
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.produto = produto;
+		this.preco = preco;
+		this.anunciante = anunciante;
+	}
+
 	public Long getCodigo() {
 		return codigo;
 	}
