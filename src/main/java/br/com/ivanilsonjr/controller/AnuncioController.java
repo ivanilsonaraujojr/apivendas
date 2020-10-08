@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ivanilsonjr.model.Anuncio;
+import br.com.ivanilsonjr.controller.dto.AnuncioDto;
 import br.com.ivanilsonjr.service.AnuncioService;
 
 @RestController
@@ -18,7 +18,7 @@ public class AnuncioController {
 	private AnuncioService as;
 	
 	@GetMapping
-	public List<Anuncio> listar(){
+	public List<AnuncioDto> listar(){
 		return as.listarAnuncios();
 	}
 }
