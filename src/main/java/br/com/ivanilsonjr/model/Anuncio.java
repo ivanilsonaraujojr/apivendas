@@ -1,6 +1,6 @@
 package br.com.ivanilsonjr.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,9 +31,8 @@ public class Anuncio {
 	private Double preco;
 	@OneToOne
 	private Usuario anunciante;
-	@NotNull
-	private Date dataAnuncio;
-	private Date dataVenda;
+	private LocalDateTime dataAnuncio = LocalDateTime.now();
+	private LocalDateTime dataVenda;
 	
 	public Long getCodigo() {
 		return codigo;
@@ -71,16 +70,16 @@ public class Anuncio {
 	public void setStatus(EstadoAnuncio status) {
 		this.status = status;
 	}
-	public Date getDataAnuncio() {
+	public LocalDateTime getDataAnuncio() {
 		return dataAnuncio;
 	}
-	public void setDataAnuncio(Date dataAnuncio) {
+	public void setDataAnuncio(LocalDateTime dataAnuncio) {
 		this.dataAnuncio = dataAnuncio;
 	}
-	public Date getDataVenda() {
+	public LocalDateTime getDataVenda() {
 		return dataVenda;
 	}
-	public void setDataVenda(Date dataVenda) {
+	public void setDataVenda(LocalDateTime dataVenda) {
 		this.dataVenda = dataVenda;
 	}
 	@Override

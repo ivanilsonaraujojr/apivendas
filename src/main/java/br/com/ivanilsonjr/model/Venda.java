@@ -1,6 +1,6 @@
 package br.com.ivanilsonjr.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,8 +27,7 @@ public class Venda {
 	private Usuario vendedorId;
 	@NotNull @NotEmpty
 	private Double preco;
-	@NotNull
-	private Date dataCompra;
+	private LocalDateTime dataCompra = LocalDateTime.now();
 	
 	public Long getCodigo() {
 		return codigo;
@@ -60,10 +59,10 @@ public class Venda {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
-	public Date getDataCompra() {
+	public LocalDateTime getDataCompra() {
 		return dataCompra;
 	}
-	public void setDataCompra(Date dataCompra) {
+	public void setDataCompra(LocalDateTime dataCompra) {
 		this.dataCompra = dataCompra;
 	}
 	@Override
