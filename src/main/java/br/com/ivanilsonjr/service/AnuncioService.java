@@ -3,7 +3,6 @@ package br.com.ivanilsonjr.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.ivanilsonjr.config.exceptions.AnuncioException;
 import br.com.ivanilsonjr.controller.dto.AnuncioDto;
 import br.com.ivanilsonjr.controller.form.AnuncioForm;
+import br.com.ivanilsonjr.controller.form.AtualizacaoAnuncioForm;
 import br.com.ivanilsonjr.model.Anuncio;
 import br.com.ivanilsonjr.model.Produto;
 import br.com.ivanilsonjr.model.enums.EstadoAnuncio;
@@ -48,6 +48,50 @@ public class AnuncioService {
 		}
 		return null;
 	}
+
+	public AnuncioDto atualizarAnuncio(Long codigo,AtualizacaoAnuncioForm atualizacaoAnuncioForm) {
+		Optional<Anuncio> anuncio = ar.findById(codigo);
+		if(!anuncio.isPresent()) {
+			throw new AnuncioException("Anuncio inexistente!");
+		}
+
+		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
+				   ur.findById(Long.parseLong("1")).get());
+	
+		if(!anunciosAtivosDoAnunciante.isEmpty() && !anunciosAtivosDoAnunciante.contains(anuncio.get())) {
+			throw new AnuncioException("Esse anuncio não pertençe a você ou não existe!");
+		}
+
+		//Atualizando entidade
+		anuncio.get().setTitulo(atualizacaoAnuncioForm.getTitulo());
+		anuncio.get().setDescricao(atualizacaoAnuncioForm.getDescricao());
+		anuncio.get().setPreco(atualizacaoAnuncioForm.getPreco());
+
+		//Persistindo entidade atualizada
+		ar.save(anuncio.get());
+
+		AnuncioDto dto = new AnuncioDto(anuncio.get());
+		return dto;
+	}
+
+	public AnuncioDto cadastrarAnuncio(AnuncioForm anuncioForm) {
+		Anuncio anuncio = anuncioForm.converter(pr, ur);
+		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
+																				   anuncio.getAnunciante());
+		List<Produto> produtosCadastradosAnunciante = pr.findAllByDonoProduto(anuncio.getAnunciante());
+
+		if(!anunciosAtivosDoAnunciante.isEmpty() && anunciosAtivosDoAnunciante.contains(anuncio)) {
+			throw new AnuncioException("Anuncio ja existente!");
+		}
+		if(!produtosCadastradosAnunciante.isEmpty() && !produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
+			throw new AnuncioException("Produto inexistente ou ele não pertence a você!");
+		}
+
+		ar.save(anuncio);
+		AnuncioDto dto = new AnuncioDto(anuncio);
+
+		return dto;
+	}
 	
 	public boolean deletarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
@@ -58,20 +102,4 @@ public class AnuncioService {
 		return false;
 	}
 
-	public Anuncio cadastrarAnuncio(@Valid AnuncioForm anuncioForm) {
-		Anuncio anuncio = anuncioForm.converter(pr, ur);
-		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, anuncio.getAnunciante());
-		List<Produto> produtosCadastradosAnunciante = pr.findAllByDonoProduto(anuncio.getAnunciante());
-
-		if(!anunciosAtivosDoAnunciante.isEmpty() && anunciosAtivosDoAnunciante.contains(anuncio)) {
-			throw new AnuncioException("Anuncio ja existente!");
-		}
-		if(!produtosCadastradosAnunciante.isEmpty() && !produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
-			throw new AnuncioException("Produto inexistente ou ele não pertence a você!");
-		}
-	
-		ar.save(anuncio);
-		return anuncio;
-	}
-	
 }
