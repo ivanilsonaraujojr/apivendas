@@ -40,6 +40,12 @@ public class Anuncio {
 
 	}
 
+	public Anuncio(String titulo, String descricao, Double preco) {
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.preco = preco;
+	}
+
 	public Anuncio(String titulo, String descricao, Produto produto, Double preco, Usuario anunciante) {
 		this.titulo = titulo;
 		this.descricao = descricao;
