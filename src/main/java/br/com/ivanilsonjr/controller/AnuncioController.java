@@ -1,13 +1,25 @@
 package br.com.ivanilsonjr.controller;
 
+import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.ivanilsonjr.controller.dto.AnuncioDto;
+import br.com.ivanilsonjr.controller.form.AnuncioForm;
+import br.com.ivanilsonjr.model.Anuncio;
 import br.com.ivanilsonjr.service.AnuncioService;
 
 @RestController
@@ -18,7 +30,36 @@ public class AnuncioController {
 	private AnuncioService as;
 	
 	@GetMapping
-	public List<AnuncioDto> listar(){
-		return as.listarAnuncios();
+	public List<AnuncioDto> listar(@RequestParam(required = true) boolean vendidos){
+		if(vendidos == false) {
+			return as.listarAnunciosAtivos();
+		}else {
+			return as.listarAnunciosTodos();
+		}
+	}
+	
+	@GetMapping("/{codigo}")
+	public ResponseEntity<AnuncioDto> mostrarAnuncio(@PathVariable Long codigo){
+		AnuncioDto anuncio = as.mostrarAnuncioCodigo(codigo);
+		if(anuncio != null) {
+			return ResponseEntity.ok(anuncio);
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PostMapping
+	public ResponseEntity<AnuncioDto> cadastrarAnuncio(@Valid @RequestBody AnuncioForm anuncioForm, UriComponentsBuilder uriBuilder){
+		Anuncio anuncio = as.cadastrarAnuncio(anuncioForm);
+		URI uri = uriBuilder.path("/anuncio/{id}").buildAndExpand(anuncio.getCodigo()).toUri();
+		return ResponseEntity.created(uri).body(new AnuncioDto(anuncio));
+	}
+	
+	@DeleteMapping("/{codigo}")
+	public ResponseEntity<?> deletarAnuncio(@PathVariable Long codigo){
+		if(as.deletarAnuncioCodigo(codigo) != false) {
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 }
+
