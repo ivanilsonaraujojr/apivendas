@@ -33,6 +33,7 @@ public class Anuncio {
 	private Usuario anunciante;
 	@NotNull
 	private Date dataAnuncio;
+	private Date dataVenda;
 	
 	public Long getCodigo() {
 		return codigo;
@@ -75,6 +76,12 @@ public class Anuncio {
 	}
 	public void setDataAnuncio(Date dataAnuncio) {
 		this.dataAnuncio = dataAnuncio;
+	}
+	public Date getDataVenda() {
+		return dataVenda;
+	}
+	public void setDataVenda(Date dataVenda) {
+		this.dataVenda = dataVenda;
 	}
 	@Override
 	public int hashCode() {
