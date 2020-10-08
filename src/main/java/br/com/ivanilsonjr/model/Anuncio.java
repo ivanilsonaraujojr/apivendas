@@ -23,6 +23,8 @@ public class Anuncio {
 	private Long codigo;
 	@NotNull @NotEmpty
 	private String titulo;
+	@NotNull @NotEmpty
+	private String descricao;
 	@OneToOne
 	private Produto produto;
 	@NotNull @Enumerated(EnumType.STRING)
@@ -45,6 +47,12 @@ public class Anuncio {
 	}
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	public Produto getProduto() {
 		return produto;
