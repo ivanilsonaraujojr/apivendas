@@ -8,9 +8,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ivanilsonjr.config.exceptions.AnuncioException;
 import br.com.ivanilsonjr.controller.dto.AnuncioDto;
 import br.com.ivanilsonjr.controller.form.AnuncioForm;
 import br.com.ivanilsonjr.model.Anuncio;
+import br.com.ivanilsonjr.model.Produto;
 import br.com.ivanilsonjr.model.enums.EstadoAnuncio;
 import br.com.ivanilsonjr.repository.AnuncioRepository;
 import br.com.ivanilsonjr.repository.ProdutoRepository;
@@ -58,6 +60,16 @@ public class AnuncioService {
 
 	public Anuncio cadastrarAnuncio(@Valid AnuncioForm anuncioForm) {
 		Anuncio anuncio = anuncioForm.converter(pr, ur);
+		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, anuncio.getAnunciante());
+		List<Produto> produtosCadastradosAnunciante = pr.findAllByDonoProduto(anuncio.getAnunciante());
+
+		if(!anunciosAtivosDoAnunciante.isEmpty() && anunciosAtivosDoAnunciante.contains(anuncio)) {
+			throw new AnuncioException("Anuncio ja existente!");
+		}
+		if(!produtosCadastradosAnunciante.isEmpty() && !produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
+			throw new AnuncioException("Produto inexistente ou ele não pertence a você!");
+		}
+	
 		ar.save(anuncio);
 		return anuncio;
 	}
