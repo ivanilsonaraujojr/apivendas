@@ -91,14 +91,13 @@ public class AnuncioService {
 		return dto;
 	}
 	
-	public boolean deletarAnuncioCodigo(Long codigo) {
+	public void deletarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
 
 		verificarAnuncioExistente(optional);
 
 		//Falta implementar lógica que verifica permissão de excluir o anuncio
 		ar.delete(optional.get());
-		return true;
 	}
 
 	private void verificarAnuncioExistente(Optional<Anuncio> anuncio) {

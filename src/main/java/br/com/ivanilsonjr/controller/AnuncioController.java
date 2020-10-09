@@ -62,10 +62,9 @@ public class AnuncioController {
 	
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<?> deletarAnuncio(@PathVariable Long codigo){
-		if(as.deletarAnuncioCodigo(codigo) != false) {
-			return ResponseEntity.ok().build();
-		}
-		return ResponseEntity.notFound().build();
+		as.deletarAnuncioCodigo(codigo);
+		return ResponseEntity.ok().build();
 	}
+
 }
 
