@@ -25,7 +25,17 @@ public class Produto {
 	private EstadoConservacao estadoConservacao;
 	@ManyToOne
 	private Usuario donoProduto;
-	
+
+	public Produto() {
+
+	}
+
+	public Produto(String nome, EstadoConservacao estadoConservacao, Usuario donoProduto) {
+		this.nome = nome;
+		this.estadoConservacao = estadoConservacao;
+		this.donoProduto = donoProduto;
+	}
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -50,14 +60,17 @@ public class Produto {
 	public void setDonoProduto(Usuario donoProduto) {
 		this.donoProduto = donoProduto;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((donoProduto == null) ? 0 : donoProduto.hashCode());
+		result = prime * result + ((estadoConservacao == null) ? 0 : estadoConservacao.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -67,10 +80,12 @@ public class Produto {
 		if (getClass() != obj.getClass())
 			return false;
 		Produto other = (Produto) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
+		if (donoProduto == null) {
+			if (other.donoProduto != null)
 				return false;
-		} else if (!codigo.equals(other.codigo))
+		} else if (!donoProduto.equals(other.donoProduto))
+			return false;
+		if (estadoConservacao != other.estadoConservacao)
 			return false;
 		if (nome == null) {
 			if (other.nome != null)
@@ -79,5 +94,5 @@ public class Produto {
 			return false;
 		return true;
 	}
-	
+
 }

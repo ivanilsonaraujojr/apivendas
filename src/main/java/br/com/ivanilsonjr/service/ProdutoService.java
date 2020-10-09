@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.ivanilsonjr.config.exceptions.BadRequestException;
 import br.com.ivanilsonjr.controller.dto.ProdutoDto;
 import br.com.ivanilsonjr.controller.form.AtualizacaoProdutoForm;
+import br.com.ivanilsonjr.controller.form.ProdutoForm;
 import br.com.ivanilsonjr.model.Produto;
 import br.com.ivanilsonjr.repository.ProdutoRepository;
 import br.com.ivanilsonjr.repository.UsuarioRepository;
@@ -56,6 +57,21 @@ public class ProdutoService {
 		produto.get().setEstadoConservacao(atualizacaoProdutoForm.getEstadoConservacao());
 
 		ProdutoDto dto = new ProdutoDto(produto.get());
+		return dto;
+	}
+
+	public ProdutoDto cadastrarProduto(ProdutoForm produtoForm) {
+		Produto produto = produtoForm.converter(pr, ur);
+
+		List<Produto> produtosCadastradosUsuario = pr.findAllByDonoProduto(ur.findById(Long.parseLong("1")).get());
+
+		if(produtosCadastradosUsuario.contains(produto)) {
+			throw new BadRequestException("Você ja cadastrou esse produto!");
+		}
+
+		pr.save(produto);
+
+		ProdutoDto dto = new ProdutoDto(produto);
 		return dto;
 	}
 

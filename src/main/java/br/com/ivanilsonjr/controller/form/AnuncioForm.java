@@ -16,6 +16,7 @@ public class AnuncioForm {
 	private Long codigoProduto;
 	@NotNull
 	private Double preco;
+
 	public String getTitulo() {
 		return titulo;
 	}
