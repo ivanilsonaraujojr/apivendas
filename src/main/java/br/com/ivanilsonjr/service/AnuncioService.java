@@ -3,6 +3,7 @@ package br.com.ivanilsonjr.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,9 @@ public class AnuncioService {
 	@Autowired
 	private AnuncioRepository ar;
 	@Autowired
-	UsuarioRepository ur;
+	private UsuarioRepository ur;
 	@Autowired 
-	ProdutoRepository pr;
+	private ProdutoRepository pr;
 	
 	public List<AnuncioDto> listarAnunciosTodos(){
 		List<Anuncio> listaAnuncios = ar.findAll();
@@ -49,6 +50,7 @@ public class AnuncioService {
 		return null;
 	}
 
+	@Transactional
 	public AnuncioDto atualizarAnuncio(Long codigo,AtualizacaoAnuncioForm atualizacaoAnuncioForm) {
 		Optional<Anuncio> anuncio = ar.findById(codigo);
 		if(!anuncio.isPresent()) {
@@ -66,9 +68,6 @@ public class AnuncioService {
 		anuncio.get().setTitulo(atualizacaoAnuncioForm.getTitulo());
 		anuncio.get().setDescricao(atualizacaoAnuncioForm.getDescricao());
 		anuncio.get().setPreco(atualizacaoAnuncioForm.getPreco());
-
-		//Persistindo entidade atualizada
-		ar.save(anuncio.get());
 
 		AnuncioDto dto = new AnuncioDto(anuncio.get());
 		return dto;
@@ -96,6 +95,7 @@ public class AnuncioService {
 	public boolean deletarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
 		if(optional.isPresent()) {
+			//Falta implementar lógica que verifica permissão de excluir o anuncio
 			ar.delete(optional.get());
 			return true;
 		}
