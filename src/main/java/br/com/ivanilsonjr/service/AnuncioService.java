@@ -82,7 +82,7 @@ public class AnuncioService {
 			throw new BadRequestException("Já existe um anúncio para esse produto!");
 		}
 		if(!produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
-			throw new BadRequestException("Produto inexistente ou não pertence a você, verifique o codigo do produto digitado!");
+			throw new BadRequestException("Produto inexistente ou não pertence a você, verifique o código do produto digitado!");
 		}
 		//Persistindo entidade
 		ar.save(anuncio);
@@ -104,7 +104,7 @@ public class AnuncioService {
 	private void verificarAnuncioExistente(Optional<Anuncio> anuncio) {
 		//Lança uma exceção(BadRequestException) se o anuncio nao existir no banco de dados
 		if(!anuncio.isPresent()) {
-			throw new BadRequestException("Anúncio inexistente, verifique o codigo digitado!");
+			throw new BadRequestException("Anúncio inexistente, verifique o código digitado!");
 		}
 	}
 
