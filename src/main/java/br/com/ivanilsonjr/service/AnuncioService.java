@@ -54,14 +54,14 @@ public class AnuncioService {
 	public AnuncioDto atualizarAnuncio(Long codigo,AtualizacaoAnuncioForm atualizacaoAnuncioForm) {
 		Optional<Anuncio> anuncio = ar.findById(codigo);
 		if(!anuncio.isPresent()) {
-			throw new BadRequestException("Anuncio inexistente!");
+			throw new BadRequestException("Anúncio inexistente!");
 		}
 
 		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
 				   ur.findById(Long.parseLong("1")).get());
-	
-		if(!anunciosAtivosDoAnunciante.isEmpty() && !anunciosAtivosDoAnunciante.contains(anuncio.get())) {
-			throw new BadRequestException("Esse anuncio não pertençe a você ou não existe!");
+
+		if(!anunciosAtivosDoAnunciante.contains(anuncio.get())) {
+			throw new BadRequestException("Esse anúncio não pertençe a você!");
 		}
 
 		//Atualizando entidade
@@ -80,10 +80,10 @@ public class AnuncioService {
 		List<Produto> produtosCadastradosAnunciante = pr.findAllByDonoProduto(anuncio.getAnunciante());
 
 		if(!anunciosAtivosDoAnunciante.isEmpty() && anunciosAtivosDoAnunciante.contains(anuncio)) {
-			throw new BadRequestException("Anuncio ja existente!");
+			throw new BadRequestException("Já existe um anúncio para esse produto!");
 		}
-		if(!produtosCadastradosAnunciante.isEmpty() && !produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
-			throw new BadRequestException("Produto inexistente ou ele não pertence a você!");
+		if(!produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
+			throw new BadRequestException("Produto inexistente ou não pertence a você, verifique o codigo do produto digitado!");
 		}
 
 		ar.save(anuncio);
