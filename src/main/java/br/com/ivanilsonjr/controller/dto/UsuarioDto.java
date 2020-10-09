@@ -1,5 +1,8 @@
 package br.com.ivanilsonjr.controller.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import br.com.ivanilsonjr.model.Usuario;
 
 public class UsuarioDto {
@@ -19,5 +22,7 @@ public class UsuarioDto {
 		return email;
 	}
 	
-	
+	public static List<UsuarioDto> converter(List<Usuario> usuario){
+		return usuario.stream().map(a -> new UsuarioDto(a)).collect(Collectors.toList());
+	}
 }
