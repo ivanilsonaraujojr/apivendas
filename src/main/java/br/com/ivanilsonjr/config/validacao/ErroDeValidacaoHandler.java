@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import br.com.ivanilsonjr.config.exceptions.AnuncioException;
+import br.com.ivanilsonjr.config.exceptions.BadRequestException;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler{
@@ -37,8 +37,8 @@ public class ErroDeValidacaoHandler{
 	}
 
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(value=AnuncioException.class)
-	public ErroGenericoDto erroDeDados(AnuncioException exception) {
+	@ExceptionHandler(value=BadRequestException.class)
+	public ErroGenericoDto erroDeDados(BadRequestException exception) {
 		ErroGenericoDto dto = new ErroGenericoDto(exception.getMessage());
 		return dto;
 	}

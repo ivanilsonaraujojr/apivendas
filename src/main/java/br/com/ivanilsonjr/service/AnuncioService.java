@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ivanilsonjr.config.exceptions.AnuncioException;
+import br.com.ivanilsonjr.config.exceptions.BadRequestException;
 import br.com.ivanilsonjr.controller.dto.AnuncioDto;
 import br.com.ivanilsonjr.controller.form.AnuncioForm;
 import br.com.ivanilsonjr.controller.form.AtualizacaoAnuncioForm;
@@ -54,14 +54,14 @@ public class AnuncioService {
 	public AnuncioDto atualizarAnuncio(Long codigo,AtualizacaoAnuncioForm atualizacaoAnuncioForm) {
 		Optional<Anuncio> anuncio = ar.findById(codigo);
 		if(!anuncio.isPresent()) {
-			throw new AnuncioException("Anuncio inexistente!");
+			throw new BadRequestException("Anuncio inexistente!");
 		}
 
 		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
 				   ur.findById(Long.parseLong("1")).get());
 	
 		if(!anunciosAtivosDoAnunciante.isEmpty() && !anunciosAtivosDoAnunciante.contains(anuncio.get())) {
-			throw new AnuncioException("Esse anuncio não pertençe a você ou não existe!");
+			throw new BadRequestException("Esse anuncio não pertençe a você ou não existe!");
 		}
 
 		//Atualizando entidade
@@ -80,10 +80,10 @@ public class AnuncioService {
 		List<Produto> produtosCadastradosAnunciante = pr.findAllByDonoProduto(anuncio.getAnunciante());
 
 		if(!anunciosAtivosDoAnunciante.isEmpty() && anunciosAtivosDoAnunciante.contains(anuncio)) {
-			throw new AnuncioException("Anuncio ja existente!");
+			throw new BadRequestException("Anuncio ja existente!");
 		}
 		if(!produtosCadastradosAnunciante.isEmpty() && !produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
-			throw new AnuncioException("Produto inexistente ou ele não pertence a você!");
+			throw new BadRequestException("Produto inexistente ou ele não pertence a você!");
 		}
 
 		ar.save(anuncio);
