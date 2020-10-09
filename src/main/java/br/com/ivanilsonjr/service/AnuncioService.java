@@ -43,19 +43,18 @@ public class AnuncioService {
 	
 	public AnuncioDto mostrarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
-		if(optional.isPresent()) {
-			AnuncioDto anuncio = new AnuncioDto(optional.get());
-			return anuncio;
-		}
-		return null;
+
+		verificarAnuncioExistente(optional);
+
+		AnuncioDto anuncio = new AnuncioDto(optional.get());
+		return anuncio;
 	}
 
 	@Transactional
 	public AnuncioDto atualizarAnuncio(Long codigo,AtualizacaoAnuncioForm atualizacaoAnuncioForm) {
 		Optional<Anuncio> anuncio = ar.findById(codigo);
-		if(!anuncio.isPresent()) {
-			throw new BadRequestException("Anúncio inexistente!");
-		}
+
+		verificarAnuncioExistente(anuncio);
 
 		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
 				   ur.findById(Long.parseLong("1")).get());
@@ -85,7 +84,7 @@ public class AnuncioService {
 		if(!produtosCadastradosAnunciante.contains(anuncio.getProduto())) {
 			throw new BadRequestException("Produto inexistente ou não pertence a você, verifique o codigo do produto digitado!");
 		}
-
+		//Persistindo entidade
 		ar.save(anuncio);
 		AnuncioDto dto = new AnuncioDto(anuncio);
 
@@ -94,12 +93,19 @@ public class AnuncioService {
 	
 	public boolean deletarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
-		if(optional.isPresent()) {
-			//Falta implementar lógica que verifica permissão de excluir o anuncio
-			ar.delete(optional.get());
-			return true;
+
+		verificarAnuncioExistente(optional);
+
+		//Falta implementar lógica que verifica permissão de excluir o anuncio
+		ar.delete(optional.get());
+		return true;
+	}
+
+	private void verificarAnuncioExistente(Optional<Anuncio> anuncio) {
+		//Lança uma exceção(BadRequestException) se o anuncio nao existir no banco de dados
+		if(!anuncio.isPresent()) {
+			throw new BadRequestException("Anúncio inexistente, verifique o codigo digitado!");
 		}
-		return false;
 	}
 
 }

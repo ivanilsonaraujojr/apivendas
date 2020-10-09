@@ -43,10 +43,7 @@ public class AnuncioController {
 	@GetMapping("/{codigo}")
 	public ResponseEntity<AnuncioDto> mostrarAnuncio(@PathVariable Long codigo){
 		AnuncioDto anuncio = as.mostrarAnuncioCodigo(codigo);
-		if(anuncio != null) {
-			return ResponseEntity.ok(anuncio);
-		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(anuncio);
 	}
 	
 	@PutMapping("/{codigo}")
