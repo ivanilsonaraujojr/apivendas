@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -25,10 +24,24 @@ public class Venda {
 	private Usuario comprador;
 	@ManyToOne @JoinColumn(name="usuario_vendedor_id")
 	private Usuario vendedor;
-	@NotNull @NotEmpty
+	@NotNull
 	private Double preco;
 	private LocalDateTime dataCompra = LocalDateTime.now();
 	
+	public Venda() {
+		
+	}
+	
+	public Venda(Long codigo, Anuncio anuncioVendido, Usuario comprador, Usuario vendedor,
+			Double preco) {
+		this.codigo = codigo;
+		this.anuncioVendido = anuncioVendido;
+		this.comprador = comprador;
+		this.vendedor = vendedor;
+		this.preco = preco;
+	}
+
+
 	public Long getCodigo() {
 		return codigo;
 	}
