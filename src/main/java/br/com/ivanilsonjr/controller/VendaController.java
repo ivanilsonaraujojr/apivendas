@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,12 +38,17 @@ public class VendaController {
 		DetalhesDaVendaDto venda = vs.mostrarVendaCodigo(codigo);
 		return ResponseEntity.ok(venda);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<VendaDto> cadastrarVenda(@RequestBody @Valid VendaForm vendaForm, UriComponentsBuilder uriBuilder){
 		VendaDto dto = vs.cadastrarVenda(vendaForm);
 		URI uri = uriBuilder.path("/venda/{codigo}").buildAndExpand(dto.getCodigo()).toUri();
 		return ResponseEntity.created(uri).body(dto);
-		
+	}
+
+	@DeleteMapping("/{codigo}")
+	public ResponseEntity<?> deletarVenda(@PathVariable Long codigo){
+		vs.deletarVenda(codigo);
+		return ResponseEntity.ok().build();
 	}
 }

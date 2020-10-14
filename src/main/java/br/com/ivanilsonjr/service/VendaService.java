@@ -1,6 +1,5 @@
 package br.com.ivanilsonjr.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,10 +69,22 @@ public class VendaService {
 		return dto;
 	}
 
+	@Transactional
+	public void deletarVenda(Long codigo) {
+		Optional<Venda> optional = vr.findById(codigo);
+
+		verificarVendaExistente(optional);
+
+		vr.delete(optional.get());
+
+		Anuncio anuncioVenda = optional.get().getAnuncioVendido();
+		anuncioVenda.setDataVenda(null);
+		anuncioVenda.setStatus(EstadoAnuncio.ABERTO);
+	}
+
 	private void verificarVendaExistente(Optional<Venda> venda) {
 		if(!venda.isPresent()) {
 			throw new BadRequestException("Venda inexistente, verifique o código digitado!");
 		}
 	}
-
 }
