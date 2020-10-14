@@ -75,6 +75,15 @@ public class ProdutoService {
 		return dto;
 	}
 
+	public void deletarProduto(Long codigo) {
+		Optional<Produto> optional = pr.findById(codigo);
+
+		verificarProdutoExistente(optional);
+
+		pr.delete(optional.get());
+
+	}
+
 	private void verificarProdutoExistente(Optional<Produto> produto) {
 		//Lança uma exceção(BadRequestException) se o produto nao existir no banco de dados
 		if(!produto.isPresent()) {
