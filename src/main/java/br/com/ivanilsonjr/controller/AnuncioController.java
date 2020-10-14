@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.ivanilsonjr.controller.dto.AnuncioDto;
+import br.com.ivanilsonjr.controller.dto.DetalhesDoAnuncioDto;
 import br.com.ivanilsonjr.controller.form.AnuncioForm;
 import br.com.ivanilsonjr.controller.form.AtualizacaoAnuncioForm;
 import br.com.ivanilsonjr.service.AnuncioService;
@@ -41,8 +42,8 @@ public class AnuncioController {
 	}
 	
 	@GetMapping("/{codigo}")
-	public ResponseEntity<AnuncioDto> mostrarAnuncio(@PathVariable Long codigo){
-		AnuncioDto anuncio = as.mostrarAnuncioCodigo(codigo);
+	public ResponseEntity<DetalhesDoAnuncioDto> mostrarAnuncio(@PathVariable Long codigo){
+		DetalhesDoAnuncioDto anuncio = as.mostrarAnuncioCodigo(codigo);
 		return ResponseEntity.ok(anuncio);
 	}
 	
@@ -54,8 +55,8 @@ public class AnuncioController {
 	}
 
 	@PostMapping
-	public ResponseEntity<AnuncioDto> cadastrarAnuncio(@Valid @RequestBody AnuncioForm anuncioForm, UriComponentsBuilder uriBuilder){
-		AnuncioDto dto = as.cadastrarAnuncio(anuncioForm);
+	public ResponseEntity<DetalhesDoAnuncioDto> cadastrarAnuncio(@Valid @RequestBody AnuncioForm anuncioForm, UriComponentsBuilder uriBuilder){
+		DetalhesDoAnuncioDto dto = as.cadastrarAnuncio(anuncioForm);
 		URI uri = uriBuilder.path("/anuncio/{id}").buildAndExpand(dto.getCodigo()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}

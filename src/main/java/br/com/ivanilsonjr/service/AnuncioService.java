@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ivanilsonjr.config.exceptions.BadRequestException;
 import br.com.ivanilsonjr.controller.dto.AnuncioDto;
+import br.com.ivanilsonjr.controller.dto.DetalhesDoAnuncioDto;
 import br.com.ivanilsonjr.controller.form.AnuncioForm;
 import br.com.ivanilsonjr.controller.form.AtualizacaoAnuncioForm;
 import br.com.ivanilsonjr.model.Anuncio;
@@ -41,12 +42,12 @@ public class AnuncioService {
 		return ListaAnunciosDto;
 	}
 	
-	public AnuncioDto mostrarAnuncioCodigo(Long codigo) {
+	public DetalhesDoAnuncioDto mostrarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
 
 		verificarAnuncioExistente(optional);
 
-		AnuncioDto anuncio = new AnuncioDto(optional.get());
+		DetalhesDoAnuncioDto anuncio = new DetalhesDoAnuncioDto(optional.get());
 		return anuncio;
 	}
 
@@ -72,7 +73,7 @@ public class AnuncioService {
 		return dto;
 	}
 
-	public AnuncioDto cadastrarAnuncio(AnuncioForm anuncioForm) {
+	public DetalhesDoAnuncioDto cadastrarAnuncio(AnuncioForm anuncioForm) {
 		Anuncio anuncio = anuncioForm.converter(pr, ur);
 		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
 																				   anuncio.getAnunciante());
@@ -86,7 +87,7 @@ public class AnuncioService {
 		}
 		//Persistindo entidade
 		ar.save(anuncio);
-		AnuncioDto dto = new AnuncioDto(anuncio);
+		DetalhesDoAnuncioDto dto = new DetalhesDoAnuncioDto(anuncio);
 
 		return dto;
 	}
