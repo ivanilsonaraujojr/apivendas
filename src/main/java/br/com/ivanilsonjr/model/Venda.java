@@ -22,9 +22,9 @@ public class Venda {
 	@NotNull @OneToOne
 	private Anuncio anuncioVendido;
 	@ManyToOne @JoinColumn(name="usuario_comprador_id")
-	private Usuario compradorId;
+	private Usuario comprador;
 	@ManyToOne @JoinColumn(name="usuario_vendedor_id")
-	private Usuario vendedorId;
+	private Usuario vendedor;
 	@NotNull @NotEmpty
 	private Double preco;
 	private LocalDateTime dataCompra = LocalDateTime.now();
@@ -41,17 +41,17 @@ public class Venda {
 	public void setAnuncioVendido(Anuncio anuncioVendido) {
 		this.anuncioVendido = anuncioVendido;
 	}
-	public Usuario getCompradorId() {
-		return compradorId;
+	public Usuario getComprador() {
+		return comprador;
 	}
-	public void setCompradorId(Usuario compradorId) {
-		this.compradorId = compradorId;
+	public void setComprador(Usuario comprador) {
+		this.comprador = comprador;
 	}
-	public Usuario getVendedorId() {
-		return vendedorId;
+	public Usuario getVendedor() {
+		return vendedor;
 	}
-	public void setVendedorId(Usuario vendedorId) {
-		this.vendedorId = vendedorId;
+	public void setVendedor(Usuario vendedor) {
+		this.vendedor = vendedor;
 	}
 	public Double getPreco() {
 		return preco;
