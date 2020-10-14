@@ -37,7 +37,7 @@ public class ProdutoController {
 	@GetMapping("/{codigo}")
 	public ResponseEntity<ProdutoDto> mostrarProduto(@PathVariable Long codigo) {
 		ProdutoDto produto = ps.mostrarProdutoCodigo(codigo);
-			return ResponseEntity.ok(produto);
+		return ResponseEntity.ok(produto);
 	}
 
 	@PutMapping("/{codigo}")

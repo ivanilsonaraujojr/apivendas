@@ -24,8 +24,8 @@ public class VendaDto {
 		this.dataCompra = venda.getDataCompra();
 		this.codigoAnuncioVendido = venda.getAnuncioVendido().getCodigo();
 		this.preco = venda.getPreco();
-		this.nomeVendedor = venda.getVendedorId().getNome();
-		this.nomeComprador = venda.getCompradorId().getNome();
+		this.nomeVendedor = venda.getVendedor().getNome();
+		this.nomeComprador = venda.getComprador().getNome();
 	}
 
 	public Long getCodigo() {
