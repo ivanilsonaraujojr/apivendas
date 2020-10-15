@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.ivanilsonjr.config.exceptions.BadRequestException;
@@ -30,15 +32,15 @@ public class AnuncioService {
 	@Autowired 
 	private ProdutoRepository pr;
 	
-	public List<AnuncioDto> listarAnunciosTodos(){
-		List<Anuncio> listaAnuncios = ar.findAll();
-		List<AnuncioDto> ListaAnunciosDto = AnuncioDto.converter(listaAnuncios);
+	public Page<AnuncioDto> listarAnunciosTodos(Pageable paginacao){
+		Page<Anuncio> listaAnuncios = ar.findAll(paginacao);
+		Page<AnuncioDto> ListaAnunciosDto = AnuncioDto.converter(listaAnuncios);
 		return ListaAnunciosDto;
 	}
 
-	public List<AnuncioDto> listarAnunciosAtivos() {
-		List<Anuncio> listaAnuncios = ar.findAllByStatus(EstadoAnuncio.ABERTO);
-		List<AnuncioDto> ListaAnunciosDto = AnuncioDto.converter(listaAnuncios);
+	public Page<AnuncioDto> listarAnunciosAtivos(Pageable paginacao) {
+		Page<Anuncio> listaAnuncios = ar.findAllByStatus(EstadoAnuncio.ABERTO, paginacao);
+		Page<AnuncioDto> ListaAnunciosDto = AnuncioDto.converter(listaAnuncios);
 		return ListaAnunciosDto;
 	}
 	

@@ -1,12 +1,14 @@
 package br.com.ivanilsonjr.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +35,12 @@ public class AnuncioController {
 	private AnuncioService as;
 	
 	@GetMapping
-	public List<AnuncioDto> listar(@RequestParam(required = true) boolean vendidos){
+	public Page<AnuncioDto> listar(@RequestParam(required = true) boolean vendidos, 
+			@PageableDefault(size=15, sort={"codigo", "titulo"}) Pageable paginacao){
 		if(vendidos == false) {
-			return as.listarAnunciosAtivos();
+			return as.listarAnunciosAtivos(paginacao);
 		}else {
-			return as.listarAnunciosTodos();
+			return as.listarAnunciosTodos(paginacao);
 		}
 	}
 	

@@ -1,8 +1,8 @@
 package br.com.ivanilsonjr.controller.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 
 import br.com.ivanilsonjr.model.Anuncio;
 import br.com.ivanilsonjr.model.enums.EstadoAnuncio;
@@ -54,8 +54,8 @@ public class AnuncioDto {
 		return dataVenda;
 	}
 	
-	public static List<AnuncioDto> converter(List<Anuncio> anuncio){
-		return anuncio.stream().map(a -> new AnuncioDto(a)).collect(Collectors.toList());
+	public static Page<AnuncioDto> converter(Page<Anuncio> anuncio){
+		return anuncio.map(a -> new AnuncioDto(a));
 	}
 	
 }
