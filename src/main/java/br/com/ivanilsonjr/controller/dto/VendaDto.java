@@ -1,8 +1,8 @@
 package br.com.ivanilsonjr.controller.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 
 import br.com.ivanilsonjr.model.Venda;
 
@@ -47,7 +47,7 @@ public class VendaDto {
 		return nomeComprador;
 	}
 	
-	public static List<VendaDto> converter(List<Venda> venda){
-		return venda.stream().map(v -> new VendaDto(v)).collect(Collectors.toList());
+	public static Page<VendaDto> converter(Page<Venda> venda){
+		return venda.map(v -> new VendaDto(v));
 	}
 }

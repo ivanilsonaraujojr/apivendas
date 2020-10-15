@@ -1,11 +1,12 @@
 package br.com.ivanilsonjr.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.ivanilsonjr.config.exceptions.BadRequestException;
@@ -29,9 +30,9 @@ public class VendaService {
 	@Autowired
 	private UsuarioRepository ur;
 	
-	public List<VendaDto> listarVendasTodas() {
-		List<Venda> listaVendas = vr.findAll();
-		List<VendaDto> listaVendasDto = VendaDto.converter(listaVendas);
+	public Page<VendaDto> listarVendasTodas(Pageable paginacao) {
+		Page<Venda> listaVendas = vr.findAll(paginacao);
+		Page<VendaDto> listaVendasDto = VendaDto.converter(listaVendas);
 		return listaVendasDto;
 	}
 
