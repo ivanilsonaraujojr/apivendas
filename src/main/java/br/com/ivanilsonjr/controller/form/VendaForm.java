@@ -31,6 +31,6 @@ public class VendaForm {
 	public Venda conveter(AnuncioRepository anuncioRepository, UsuarioRepository usuarioRepository) {
 		Anuncio anuncio = anuncioRepository.findById(this.codigoAnuncio).get();
 		Usuario comprador = usuarioRepository.getOne(this.compradorId);
-		return new Venda(this.codigoAnuncio, anuncio, comprador , anuncio.getAnunciante(), anuncio.getPreco());
+		return new Venda(anuncio, comprador , anuncio.getAnunciante(), anuncio.getPreco());
 	}
 }

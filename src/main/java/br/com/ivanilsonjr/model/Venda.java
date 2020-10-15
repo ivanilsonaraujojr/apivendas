@@ -32,9 +32,8 @@ public class Venda {
 		
 	}
 	
-	public Venda(Long codigo, Anuncio anuncioVendido, Usuario comprador, Usuario vendedor,
+	public Venda(Anuncio anuncioVendido, Usuario comprador, Usuario vendedor,
 			Double preco) {
-		this.codigo = codigo;
 		this.anuncioVendido = anuncioVendido;
 		this.comprador = comprador;
 		this.vendedor = vendedor;
