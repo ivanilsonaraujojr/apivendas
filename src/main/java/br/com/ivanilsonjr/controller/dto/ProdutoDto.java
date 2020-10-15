@@ -1,10 +1,10 @@
 package br.com.ivanilsonjr.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+
+import org.springframework.data.domain.Page;
 
 import br.com.ivanilsonjr.model.Produto;
 import br.com.ivanilsonjr.model.enums.EstadoConservacao;
@@ -37,7 +37,7 @@ public class ProdutoDto {
 		return dono;
 	}
 
-	public static List<ProdutoDto> converter(List<Produto> produto){
-		return produto.stream().map(a -> new ProdutoDto(a)).collect(Collectors.toList());
+	public static Page<ProdutoDto> converter(Page<Produto> produto){
+		return produto.map(p -> new ProdutoDto(p));
 	}
 }
