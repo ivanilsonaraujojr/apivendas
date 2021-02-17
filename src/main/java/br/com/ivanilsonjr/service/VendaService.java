@@ -17,8 +17,9 @@ import br.com.ivanilsonjr.model.Anuncio;
 import br.com.ivanilsonjr.model.Venda;
 import br.com.ivanilsonjr.model.enums.EstadoAnuncio;
 import br.com.ivanilsonjr.repository.AnuncioRepository;
-import br.com.ivanilsonjr.repository.UsuarioRepository;
+import br.com.ivanilsonjr.repository.ClienteRepository;
 import br.com.ivanilsonjr.repository.VendaRepository;
+import br.com.ivanilsonjr.util.ApiVendasUtil;
 
 @Service
 public class VendaService {
@@ -28,37 +29,34 @@ public class VendaService {
 	@Autowired
 	private AnuncioRepository ar;
 	@Autowired
-	private UsuarioRepository ur;
+	private ClienteRepository cr;
 	
 	public Page<VendaDto> listarVendasTodas(Pageable paginacao) {
 		Page<Venda> listaVendas = vr.findAll(paginacao);
-		Page<VendaDto> listaVendasDto = VendaDto.converter(listaVendas);
-		return listaVendasDto;
+		return VendaDto.converter(listaVendas);
 	}
 
 	public DetalhesDaVendaDto mostrarVendaCodigo(Long codigo) {
 		Optional<Venda> optional = vr.findById(codigo);
 
-		verificarVendaExistente(optional);
+		ApiVendasUtil.verificarObjetoEhExistente(optional,"Venda");
 
-		DetalhesDaVendaDto venda = new DetalhesDaVendaDto(optional.get());
-		return venda;
+		return new DetalhesDaVendaDto(optional.get());
 	}
 	
 	@Transactional
 	public VendaDto cadastrarVenda(VendaForm vendaForm) {
 		//Verifica existência do anuncio
 		Optional<Anuncio> anuncioVendido = ar.findById(vendaForm.getCodigoAnuncio());
-		if(!anuncioVendido.isPresent()) {
-			throw new BadRequestException("Produto inexistente, verifique o código digitado!");
-		}
+		
+		ApiVendasUtil.verificarObjetoEhExistente(anuncioVendido, "Produto");
 		
 		if(anuncioVendido.get().getStatus().equals(EstadoAnuncio.VENDIDO)) {
 			throw new BadRequestException("Esse produto ja foi vendido, verifique o código digitado!");
 		}
 		
 		//Se existir, registrar a venda muda o status do anuncio para vendido e atribui data da venda
-		Venda venda = vendaForm.conveter(ar, ur);
+		Venda venda = vendaForm.conveter(ar, cr);
 		
 		//Persiste a venda no banco de dados
 		vr.save(venda);
@@ -66,26 +64,19 @@ public class VendaService {
 		anuncioVendido.get().setStatus(EstadoAnuncio.VENDIDO);
 		anuncioVendido.get().setDataVenda(venda.getDataCompra());
 		
-		VendaDto dto = new VendaDto(venda);
-		return dto;
+		return new VendaDto(venda);
 	}
 
 	@Transactional
 	public void deletarVenda(Long codigo) {
 		Optional<Venda> optional = vr.findById(codigo);
 
-		verificarVendaExistente(optional);
+		ApiVendasUtil.verificarObjetoEhExistente(optional, "Venda");
 
 		vr.delete(optional.get());
 
 		Anuncio anuncioVenda = optional.get().getAnuncioVendido();
 		anuncioVenda.setDataVenda(null);
 		anuncioVenda.setStatus(EstadoAnuncio.ABERTO);
-	}
-
-	private void verificarVendaExistente(Optional<Venda> venda) {
-		if(!venda.isPresent()) {
-			throw new BadRequestException("Venda inexistente, verifique o código digitado!");
-		}
 	}
 }

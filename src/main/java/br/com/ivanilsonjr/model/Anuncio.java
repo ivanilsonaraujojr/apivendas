@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -21,9 +23,9 @@ public class Anuncio {
 	
 	@Id @GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long codigo;
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String titulo;
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String descricao;
 	@OneToOne
 	private Produto produto;
@@ -31,8 +33,9 @@ public class Anuncio {
 	private EstadoAnuncio status = EstadoAnuncio.ABERTO;
 	@NotNull
 	private Double preco;
-	@OneToOne
-	private Usuario anunciante;
+	@ManyToOne
+	@JoinColumn(name = "id_anunciante")
+	private Cliente anunciante;
 	private LocalDateTime dataAnuncio = LocalDateTime.now();
 	private LocalDateTime dataVenda;
 	
@@ -46,7 +49,7 @@ public class Anuncio {
 		this.preco = preco;
 	}
 
-	public Anuncio(String titulo, String descricao, Produto produto, Double preco, Usuario anunciante) {
+	public Anuncio(String titulo, String descricao, Produto produto, Double preco, Cliente anunciante) {
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.produto = produto;
@@ -84,10 +87,10 @@ public class Anuncio {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
-	public Usuario getAnunciante() {
+	public Cliente getAnunciante() {
 		return anunciante;
 	}
-	public void setAnunciante(Usuario anunciante) {
+	public void setAnunciante(Cliente anunciante) {
 		this.anunciante = anunciante;
 	}
 	public EstadoAnuncio getStatus() {

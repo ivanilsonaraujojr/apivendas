@@ -37,7 +37,7 @@ public class AnuncioController {
 	@GetMapping
 	public Page<AnuncioDto> listar(@RequestParam(required = true) boolean vendidos, 
 			@PageableDefault(size=15, sort={"codigo", "titulo"}) Pageable paginacao){
-		if(vendidos == false) {
+		if(!vendidos) {
 			return as.listarAnunciosAtivos(paginacao);
 		}else {
 			return as.listarAnunciosTodos(paginacao);

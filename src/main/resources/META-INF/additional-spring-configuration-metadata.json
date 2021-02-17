@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "Secret utilizada para gerar os tokens jwt"
+  },
+  {
+    "name": "application.version",
+    "type": "java.lang.String",
+    "description": "Versão atual do projeto"
+  }
+]}

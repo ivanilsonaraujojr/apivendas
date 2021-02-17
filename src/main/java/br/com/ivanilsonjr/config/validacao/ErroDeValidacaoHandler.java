@@ -32,14 +32,12 @@ public class ErroDeValidacaoHandler{
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value=JsonProcessingException.class)
 	public ErroDeJsonDto jsonHandle(JsonProcessingException exception) {
-		ErroDeJsonDto dto = new ErroDeJsonDto("Erro: Verifique seu JSON", "Linha: " + exception.getLocation().getLineNr());
-		return dto;
+		return new ErroDeJsonDto("Erro: Verifique seu JSON", "Linha: " + exception.getLocation().getLineNr());
 	}
 
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value=BadRequestException.class)
 	public ErroGenericoDto erroDeDados(BadRequestException exception) {
-		ErroGenericoDto dto = new ErroGenericoDto(exception.getMessage());
-		return dto;
+		return new ErroGenericoDto(exception.getMessage());
 	}
 }

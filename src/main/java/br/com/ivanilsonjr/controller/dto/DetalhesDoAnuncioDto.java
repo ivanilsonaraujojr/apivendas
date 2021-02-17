@@ -14,7 +14,7 @@ public class DetalhesDoAnuncioDto {
 	private EstadoAnuncio status;
 	private Double preco;
 	private ProdutoDto produto;
-	private UsuarioDto anunciante;
+	private ClienteDto anunciante;
 	private LocalDateTime dataAnuncio;
 	private LocalDateTime dataVenda;
 	
@@ -25,7 +25,7 @@ public class DetalhesDoAnuncioDto {
 		this.status = anuncio.getStatus();
 		this.preco = anuncio.getPreco();
 		this.produto = new ProdutoDto(anuncio.getProduto());
-		this.anunciante = new UsuarioDto(anuncio.getAnunciante());
+		this.anunciante = new ClienteDto(anuncio.getAnunciante());
 		this.dataAnuncio = anuncio.getDataAnuncio();
 		this.dataVenda = anuncio.getDataVenda();
 	}
@@ -48,7 +48,7 @@ public class DetalhesDoAnuncioDto {
 	public ProdutoDto getProduto() {
 		return produto;
 	}
-	public UsuarioDto getAnunciante() {
+	public ClienteDto getAnunciante() {
 		return anunciante;
 	}
 	public LocalDateTime getDataAnuncio() {

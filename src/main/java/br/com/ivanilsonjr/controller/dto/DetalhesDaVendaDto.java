@@ -13,8 +13,8 @@ public class DetalhesDaVendaDto {
 	private String nomeProduto;
 	private EstadoConservacao estadoConservacaoProduto;
 	private Double preco;
-	private UsuarioDto vendedor;
-	private UsuarioDto comprador;
+	private ClienteDto vendedor;
+	private ClienteDto comprador;
 	
 	public DetalhesDaVendaDto() {
 		
@@ -27,8 +27,8 @@ public class DetalhesDaVendaDto {
 		this.nomeProduto = venda.getAnuncioVendido().getProduto().getNome();
 		this.estadoConservacaoProduto = venda.getAnuncioVendido().getProduto().getEstadoConservacao();
 		this.preco = venda.getAnuncioVendido().getPreco();
-		this.vendedor = new UsuarioDto(venda.getVendedor());
-		this.comprador = new UsuarioDto(venda.getComprador());
+		this.vendedor = new ClienteDto(venda.getVendedor());
+		this.comprador = new ClienteDto(venda.getComprador());
 	}
 	
 	public Long getCodigo() {
@@ -55,11 +55,11 @@ public class DetalhesDaVendaDto {
 		return preco;
 	}
 
-	public UsuarioDto getVendedor() {
+	public ClienteDto getVendedor() {
 		return vendedor;
 	}
 
-	public UsuarioDto getComprador() {
+	public ClienteDto getComprador() {
 		return comprador;
 	}
 	

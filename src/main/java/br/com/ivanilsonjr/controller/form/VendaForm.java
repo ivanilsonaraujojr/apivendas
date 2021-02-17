@@ -3,10 +3,10 @@ package br.com.ivanilsonjr.controller.form;
 import javax.validation.constraints.NotNull;
 
 import br.com.ivanilsonjr.model.Anuncio;
-import br.com.ivanilsonjr.model.Usuario;
+import br.com.ivanilsonjr.model.Cliente;
 import br.com.ivanilsonjr.model.Venda;
 import br.com.ivanilsonjr.repository.AnuncioRepository;
-import br.com.ivanilsonjr.repository.UsuarioRepository;
+import br.com.ivanilsonjr.repository.ClienteRepository;
 
 public class VendaForm {
 	
@@ -28,9 +28,9 @@ public class VendaForm {
 		this.compradorId = compradorId;
 	}
 	
-	public Venda conveter(AnuncioRepository anuncioRepository, UsuarioRepository usuarioRepository) {
+	public Venda conveter(AnuncioRepository anuncioRepository, ClienteRepository clienteRepository) {
 		Anuncio anuncio = anuncioRepository.findById(this.codigoAnuncio).get();
-		Usuario comprador = usuarioRepository.getOne(this.compradorId);
+		Cliente comprador = clienteRepository.getOne(this.compradorId);
 		return new Venda(anuncio, comprador , anuncio.getAnunciante(), anuncio.getPreco());
 	}
 }

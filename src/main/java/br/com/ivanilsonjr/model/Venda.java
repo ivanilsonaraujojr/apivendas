@@ -20,10 +20,10 @@ public class Venda {
 	private Long codigo;
 	@NotNull @OneToOne
 	private Anuncio anuncioVendido;
-	@ManyToOne @JoinColumn(name="usuario_comprador_id")
-	private Usuario comprador;
-	@ManyToOne @JoinColumn(name="usuario_vendedor_id")
-	private Usuario vendedor;
+	@ManyToOne @JoinColumn(name="id_cliente_comprador")
+	private Cliente comprador;
+	@ManyToOne @JoinColumn(name="id_cliente_vendedor")
+	private Cliente vendedor;
 	@NotNull
 	private Double preco;
 	private LocalDateTime dataCompra = LocalDateTime.now();
@@ -32,7 +32,7 @@ public class Venda {
 		
 	}
 	
-	public Venda(Anuncio anuncioVendido, Usuario comprador, Usuario vendedor,
+	public Venda(Anuncio anuncioVendido, Cliente comprador, Cliente vendedor,
 			Double preco) {
 		this.anuncioVendido = anuncioVendido;
 		this.comprador = comprador;
@@ -53,16 +53,16 @@ public class Venda {
 	public void setAnuncioVendido(Anuncio anuncioVendido) {
 		this.anuncioVendido = anuncioVendido;
 	}
-	public Usuario getComprador() {
+	public Cliente getComprador() {
 		return comprador;
 	}
-	public void setComprador(Usuario comprador) {
+	public void setComprador(Cliente comprador) {
 		this.comprador = comprador;
 	}
-	public Usuario getVendedor() {
+	public Cliente getVendedor() {
 		return vendedor;
 	}
-	public void setVendedor(Usuario vendedor) {
+	public void setVendedor(Cliente vendedor) {
 		this.vendedor = vendedor;
 	}
 	public Double getPreco() {

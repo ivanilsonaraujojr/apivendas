@@ -19,8 +19,9 @@ import br.com.ivanilsonjr.model.Anuncio;
 import br.com.ivanilsonjr.model.Produto;
 import br.com.ivanilsonjr.model.enums.EstadoAnuncio;
 import br.com.ivanilsonjr.repository.AnuncioRepository;
+import br.com.ivanilsonjr.repository.ClienteRepository;
 import br.com.ivanilsonjr.repository.ProdutoRepository;
-import br.com.ivanilsonjr.repository.UsuarioRepository;
+import br.com.ivanilsonjr.util.ApiVendasUtil;
 
 @Service
 public class AnuncioService {
@@ -28,39 +29,36 @@ public class AnuncioService {
 	@Autowired
 	private AnuncioRepository ar;
 	@Autowired
-	private UsuarioRepository ur;
+	private ClienteRepository cr;
 	@Autowired 
 	private ProdutoRepository pr;
 	
 	public Page<AnuncioDto> listarAnunciosTodos(Pageable paginacao){
 		Page<Anuncio> listaAnuncios = ar.findAll(paginacao);
-		Page<AnuncioDto> ListaAnunciosDto = AnuncioDto.converter(listaAnuncios);
-		return ListaAnunciosDto;
+		return AnuncioDto.converter(listaAnuncios);
 	}
 
 	public Page<AnuncioDto> listarAnunciosAtivos(Pageable paginacao) {
 		Page<Anuncio> listaAnuncios = ar.findAllByStatus(EstadoAnuncio.ABERTO, paginacao);
-		Page<AnuncioDto> ListaAnunciosDto = AnuncioDto.converter(listaAnuncios);
-		return ListaAnunciosDto;
+		return AnuncioDto.converter(listaAnuncios);
 	}
 	
 	public DetalhesDoAnuncioDto mostrarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
 
-		verificarAnuncioExistente(optional);
+		ApiVendasUtil.verificarObjetoEhExistente(optional,"Anúncio");
 
-		DetalhesDoAnuncioDto anuncio = new DetalhesDoAnuncioDto(optional.get());
-		return anuncio;
+		return new DetalhesDoAnuncioDto(optional.get());
 	}
 
 	@Transactional
 	public AnuncioDto atualizarAnuncio(Long codigo,AtualizacaoAnuncioForm atualizacaoAnuncioForm) {
 		Optional<Anuncio> anuncio = ar.findById(codigo);
 
-		verificarAnuncioExistente(anuncio);
+		ApiVendasUtil.verificarObjetoEhExistente(anuncio,"Anúncio");
 
 		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
-				   ur.findById(Long.parseLong("1")).get());
+				   cr.findById(Long.parseLong("1")).get());
 
 		if(!anunciosAtivosDoAnunciante.contains(anuncio.get())) {
 			throw new BadRequestException("Esse anúncio não pertençe a você!");
@@ -71,12 +69,11 @@ public class AnuncioService {
 		anuncio.get().setDescricao(atualizacaoAnuncioForm.getDescricao());
 		anuncio.get().setPreco(atualizacaoAnuncioForm.getPreco());
 
-		AnuncioDto dto = new AnuncioDto(anuncio.get());
-		return dto;
+		return new AnuncioDto(anuncio.get());
 	}
 
 	public DetalhesDoAnuncioDto cadastrarAnuncio(AnuncioForm anuncioForm) {
-		Anuncio anuncio = anuncioForm.converter(pr, ur);
+		Anuncio anuncio = anuncioForm.converter(pr, cr);
 		List<Anuncio> anunciosAtivosDoAnunciante = ar.findAllByStatusAndAnunciante(EstadoAnuncio.ABERTO, 
 																				   anuncio.getAnunciante());
 		List<Produto> produtosCadastradosAnunciante = pr.findAllByDonoProduto(anuncio.getAnunciante());
@@ -89,25 +86,16 @@ public class AnuncioService {
 		}
 		//Persistindo entidade
 		ar.save(anuncio);
-		DetalhesDoAnuncioDto dto = new DetalhesDoAnuncioDto(anuncio);
 
-		return dto;
+		return new DetalhesDoAnuncioDto(anuncio);
 	}
 	
 	public void deletarAnuncioCodigo(Long codigo) {
 		Optional<Anuncio> optional = ar.findById(codigo);
 
-		verificarAnuncioExistente(optional);
+		ApiVendasUtil.verificarObjetoEhExistente(optional,"Anúncio");
 
 		//Falta implementar lógica que verifica permissão de excluir o anuncio
 		ar.delete(optional.get());
 	}
-
-	private void verificarAnuncioExistente(Optional<Anuncio> anuncio) {
-		//Lança uma exceção(BadRequestException) se o anuncio nao existir no banco de dados
-		if(!anuncio.isPresent()) {
-			throw new BadRequestException("Anúncio inexistente, verifique o código digitado!");
-		}
-	}
-
 }

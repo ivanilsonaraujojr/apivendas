@@ -25,9 +25,11 @@ hs_err_pid*
 .metadata
 .settings/
 .project
+.mvn
 target/
 /.classpath
-/.gitignore
+mvnw
+mvnw.cmd
 
 
 bin/

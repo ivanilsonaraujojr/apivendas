@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -23,14 +24,14 @@ public class Produto {
 	private String nome;
 	@NotNull @Enumerated(EnumType.STRING)
 	private EstadoConservacao estadoConservacao;
-	@ManyToOne
-	private Usuario donoProduto;
+	@ManyToOne @JoinColumn(name = "id_usuario_dono_produto")
+	private Cliente donoProduto;
 
 	public Produto() {
 
 	}
 
-	public Produto(String nome, EstadoConservacao estadoConservacao, Usuario donoProduto) {
+	public Produto(String nome, EstadoConservacao estadoConservacao, Cliente donoProduto) {
 		this.nome = nome;
 		this.estadoConservacao = estadoConservacao;
 		this.donoProduto = donoProduto;
@@ -54,10 +55,10 @@ public class Produto {
 	public void setEstadoConservacao(EstadoConservacao estadoConservacao) {
 		this.estadoConservacao = estadoConservacao;
 	}
-	public Usuario getDonoProduto() {
+	public Cliente getDonoProduto() {
 		return donoProduto;
 	}
-	public void setDonoProduto(Usuario donoProduto) {
+	public void setDonoProduto(Cliente donoProduto) {
 		this.donoProduto = donoProduto;
 	}
 

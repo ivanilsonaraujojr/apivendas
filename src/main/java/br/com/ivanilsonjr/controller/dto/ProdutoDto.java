@@ -15,13 +15,13 @@ public class ProdutoDto {
 	private String nome;
 	@Enumerated(EnumType.STRING)
 	private EstadoConservacao estadoConservacao;
-	private UsuarioDto dono;
+	private ClienteDto dono;
 
 	public ProdutoDto(Produto produto) {
 		this.codigo = produto.getCodigo();
 		this.nome = produto.getNome();
 		this.estadoConservacao = produto.getEstadoConservacao();
-		this.dono = new UsuarioDto(produto.getDonoProduto());
+		this.dono = new ClienteDto(produto.getDonoProduto());
 	}
 	
 	public Long getCodigo() {
@@ -33,7 +33,7 @@ public class ProdutoDto {
 	public EstadoConservacao getEstadoConservacao() {
 		return estadoConservacao;
 	}
-	public UsuarioDto getDono() {
+	public ClienteDto getDono() {
 		return dono;
 	}
 

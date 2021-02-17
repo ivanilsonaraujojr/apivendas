@@ -5,8 +5,7 @@ import javax.validation.constraints.Size;
 
 import br.com.ivanilsonjr.model.Produto;
 import br.com.ivanilsonjr.model.enums.EstadoConservacao;
-import br.com.ivanilsonjr.repository.ProdutoRepository;
-import br.com.ivanilsonjr.repository.UsuarioRepository;
+import br.com.ivanilsonjr.repository.ClienteRepository;
 
 public class ProdutoForm {
 	
@@ -28,7 +27,7 @@ public class ProdutoForm {
 		this.estadoConservacao = estadoConservacao;
 	}
 	
-	public Produto converter(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
-		return new Produto(nome, estadoConservacao, usuarioRepository.findById(Long.parseLong("1")).get());
+	public Produto converter(ClienteRepository clienteRepository) {
+		return new Produto(nome, estadoConservacao, clienteRepository.findById(Long.parseLong("1")).get());
 	}
 }

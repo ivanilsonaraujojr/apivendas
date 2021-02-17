@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  db:
+    image: "postgres:12-alpine"
+    container_name: dbvendas
+    volumes:
+      - /home/ivanilsonjunior/dbvendas:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=apivendas
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  apivendas:
+    image: "registry.solutis.digital/ivanilson.junior/apivendas:develop"
+    container_name: apivendas
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRESQL_PORT_NUMBER=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=apivendas
+      - APIVENDAS_AUTH_SECRET=ambientedev
+    ports:
+      - 8080:8080
+    links:
+      - db
+    depends_on: 
+      - db

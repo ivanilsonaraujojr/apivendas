@@ -4,8 +4,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.com.ivanilsonjr.model.Anuncio;
+import br.com.ivanilsonjr.repository.ClienteRepository;
 import br.com.ivanilsonjr.repository.ProdutoRepository;
-import br.com.ivanilsonjr.repository.UsuarioRepository;
 
 public class AnuncioForm {
 	@Size(min = 7, message="Titulo do anuncio invalido")
@@ -42,9 +42,9 @@ public class AnuncioForm {
 		this.preco = preco;
 	}
 	
-	public Anuncio converter(ProdutoRepository produtoRepository, UsuarioRepository usuarioRepository) {
+	public Anuncio converter(ProdutoRepository produtoRepository, ClienteRepository clienteRepository) {
 		return new Anuncio(titulo, descricao, produtoRepository.find(codigoProduto, Long.parseLong("1")), preco, 
-				usuarioRepository.findById(Long.parseLong("1")).get());
+				clienteRepository.findById(Long.parseLong("1")).get());
 	}
 	
 }
