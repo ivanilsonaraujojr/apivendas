@@ -4,7 +4,7 @@ services:
     image: "postgres:12-alpine"
     container_name: dbvendas
     volumes:
-      - /home/ivanilsonjunior/dbvendas:/var/lib/postgresql/data
+      - ./dbvendas:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
@@ -12,7 +12,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   apivendas:
-    image: "registry.solutis.digital/ivanilson.junior/apivendas:develop"
+    image: "apivendas:latest"
     container_name: apivendas
     environment:
       - POSTGRES_HOST=db
