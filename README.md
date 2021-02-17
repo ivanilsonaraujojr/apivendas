@@ -36,17 +36,17 @@ $ git clone https://github.com/ivanilsonaraujojr/apivendas.git
 2 - [Importe o projeto para o Spring Tool Suite](https://www.youtube.com/watch?v=q06ODXpJ7-o&ab_channel=SergeyKargopolov)
 
 3 - Ter um banco de dados postgresql instalado em sua maquina(ou rodando em um container)
-#### `Comando para rodar um container docker de banco de dados postgresql na porta 5432 em localhost:`
+##### Comando para rodar um container docker de banco de dados postgresql na porta 5432 em localhost:
 ```shell
 $ docker run -d --name dbvendas -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_USER=postgres" -e "POSTGRES_DB=apivendas" -p 5432:5432 -v "${PWD}/dbvendas:/var/lib/postgresql/data" postgres:12-alpine
 ```
 4 - São necessárias as seguintes variaveis de ambientes para rodar a aplicação:
-* ### POSTGRES_HOST (URL do banco de dados)
-* ### POSTGRESQL_PORT_NUMBER (Porta do banco de dados)
-* ### POSTGRES_DB (Nome do banco de dados)
-* ### POSTGRES_USER (Nome do usuário do banco de dados)
-* ### POSTGRES_PASSWORD (Senha do usuário do banco de dados)
-* ### APIVENDAS_AUTH_SECRET (Secret utilizada para gerar os tokens JWT)
+* #### POSTGRES_HOST (URL do banco de dados)
+* #### POSTGRESQL_PORT_NUMBER (Porta do banco de dados)
+* #### POSTGRES_DB (Nome do banco de dados)
+* #### POSTGRES_USER (Nome do usuário do banco de dados)
+* #### POSTGRES_PASSWORD (Senha do usuário do banco de dados)
+* #### APIVENDAS_AUTH_SECRET (Secret utilizada para gerar os tokens JWT)
 
 5 - Rodar a classe "ApiVendasApplication" e o Spring irá ligar um servidor localhost na porta 8080 e criar as tabelas e relacionamentos no banco de dados.
 
